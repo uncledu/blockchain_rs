@@ -11,13 +11,14 @@ impl Blockchain {
     pub fn add_block(&mut self, data: String) -> Result<()> {
         let prev = self.blocks.last().unwrap();
         let prev_block_hash = prev.get_hash();
-        let newblock = Block::new_block(data, prev_block_hash)?;
+        let prev_nonce = prev.get_nonce() + 1;
+        let newblock = Block::new_block(data, prev_block_hash, prev_nonce)?;
         self.blocks.push(newblock);
         Ok(())
     }
     /// NewGenesisBlock creates and returns genesis Block
     pub fn new_genesis_block() -> Block {
-        Block::new_block(String::from("Genesis Block"), String::new()).unwrap()
+        Block::new_block(String::from("Genesis Block"), String::new(), 1).unwrap()
     }
 
     pub fn new() -> Blockchain {
